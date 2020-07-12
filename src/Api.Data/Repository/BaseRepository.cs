@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    class BaseRepository<T> : IReposotory<T> where T : BaseEntity
+    public class BaseRepository<T> : IReposotory<T> where T : BaseEntity
 
     {
         protected readonly MyContext _context;
@@ -51,6 +51,8 @@ namespace Data.Repository
 
                 item.CreateAt = DateTime.UtcNow;
                 _dataset.Add(item);
+
+                item.UpdateAt = null;
 
                 await _context.SaveChangesAsync();
             }

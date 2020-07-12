@@ -4,14 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Context
 {
-    class MyContext : DbContext
+    public class MyContext : DbContext
     {
         public DbSet<TimeEntity> Times { get; set; }
         public DbSet<CampeonatoEntity> Campeonato { get; set; }
         public DbSet<PartidaEntity> Partida { get; set; }
         public DbSet<PontuacaoCampeonatoEntity> PontuacaoCampeonato { get; set; }
 
-        public MyContext(DbContextOptions<MyContext> options) : base(options){ }
+        public MyContext(DbContextOptions<MyContext> options) : base(options){
+            Database.Migrate();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
