@@ -60,9 +60,11 @@ namespace Application.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] TimeEntity time)
         {
-            if (!ModelState.IsValid)
+            var validation = time.Validar();
+
+            if (!ModelState.IsValid || !validation.IsValid)
             {
-                return BadRequest(ModelState); 
+                return BadRequest(validation.Errors); 
             }
 
             try

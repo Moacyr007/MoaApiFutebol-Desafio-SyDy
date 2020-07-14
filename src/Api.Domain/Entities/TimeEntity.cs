@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Domain.Validator;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
+
 {
     public class TimeEntity : BaseEntity
     {
-        //public TimeEntity(string nome)
-        //{
-        //    Nome = nome;
-
-        //    //TODO validação de nome unico
-        //    //TODO validacao de tamanho minmo de 3 caracteres
-        //}
-
+        public FluentValidation.Results.ValidationResult Validar()
+        {
+            TimeValidator validator = new TimeValidator();
+            var results = validator.Validate(this);
+            
+            return results;
+        }
         public string Nome { get; set; }
     }
 }
