@@ -9,8 +9,8 @@ namespace Domain.Interfaces.Services.Time
     {
         Task<TimeEntity> Get(Guid id);
         Task<IEnumerable<TimeEntity>> GetAll ();
-        Task<TimeEntity> Post(TimeEntity time);
-        Task<TimeEntity> Put(TimeEntity time);
+        Task<TimeEntity> Post(TimeEntity entity);
+        Task<TimeEntity> Put(TimeEntity entity);
         Task<bool> Delete(Guid id);
     }
 }

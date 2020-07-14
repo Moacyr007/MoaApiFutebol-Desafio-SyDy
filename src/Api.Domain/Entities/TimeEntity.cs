@@ -10,7 +10,7 @@ namespace Domain.Entities
         //    Nome = nome;
 
         //    //TODO validação de nome unico
-        //    //TODO validacao de tamanho minmo e maximo
+        //    //TODO validacao de tamanho minmo de 3 caracteres
         //}
 
         public string Nome { get; set; }

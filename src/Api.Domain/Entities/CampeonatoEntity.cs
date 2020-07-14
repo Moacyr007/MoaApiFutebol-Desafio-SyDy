@@ -11,8 +11,11 @@ namespace Domain.Entities
         //{
         //    //TODO ver em que camada vai ficar o logica de calcular as posicoes
         //}
-
-        public ICollection<PartidaEntity> Partidas { get; set; }
+        public CampeonatoEntity()
+        {
+            Partidas = new List<PartidaEntity>();
+        }
+        public virtual List<PartidaEntity> Partidas { get; set; }
         public TimeEntity Campeao { get; set; }
         public TimeEntity Vice { get; set; }
         public TimeEntity Terceiro { get; set; }

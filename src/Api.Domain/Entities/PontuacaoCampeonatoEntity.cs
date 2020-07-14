@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Domain.Entities
@@ -17,5 +18,10 @@ namespace Domain.Entities
         public TimeEntity Time { get; set; }
         public CampeonatoEntity Campeonato { get; set; }
         public int Pontuacao { get; set; }
+
+        public static implicit operator Collection<object>(PontuacaoCampeonatoEntity v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

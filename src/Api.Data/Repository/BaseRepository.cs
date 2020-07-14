@@ -16,7 +16,6 @@ namespace Data.Repository
 
         public BaseRepository(MyContext context)
         {
-            //Recebe o contexto e disponibiliza pra classe toda
             _context = context;
             _dataset = context.Set<T>();
         }
