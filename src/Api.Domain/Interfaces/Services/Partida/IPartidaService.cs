@@ -13,5 +13,6 @@ namespace Domain.Interfaces.Services.Partida
         Task<PartidaEntity> Post(PartidaEntity entity);
         Task<PartidaEntity> Put(PartidaEntity entity);
         Task<bool> Delete(Guid id);
+        Task<List<PartidaEntity>> GerarPartidas();
     }
 }

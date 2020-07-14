@@ -13,5 +13,6 @@ namespace Domain.Interfaces.Services.PontuacaoCampeonato
         Task<PontuacaoCampeonatoEntity> Post(PontuacaoCampeonatoEntity entity);
         Task<PontuacaoCampeonatoEntity> Put(PontuacaoCampeonatoEntity entity);
         Task<bool> Delete(Guid id);
+        List<PontuacaoCampeonatoEntity> CalcularPontuacaoCampeonato(List<PartidaEntity> partidas, CampeonatoEntity campeonato, List<TimeEntity> times);
     }
 }

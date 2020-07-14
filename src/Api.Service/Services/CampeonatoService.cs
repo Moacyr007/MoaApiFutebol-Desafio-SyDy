@@ -36,87 +36,29 @@ namespace Service.Services
 
         public async Task<CampeonatoEntity> GerarCampeonato()
         {
-            var times = await _timeService.GetAll();
+            List<TimeEntity> times = (List<TimeEntity>)await _timeService.GetAll();
             var campeonato = new CampeonatoEntity();
 
-
-            var pontuacoesCampeonato = new List<PontuacaoCampeonatoEntity> { };
-
-            foreach (var time1 in times){
-
-                var pontuacoeCampeonato = new PontuacaoCampeonatoEntity();
-                pontuacoeCampeonato.Time = time1;
-
-                pontuacoesCampeonato.Add(pontuacoeCampeonato);
-
-                foreach (var time2 in times)
-                {
-                    //Gerar partida
-
-                    //TODO ver se não tem uma forma melhor de fazer isso no lugar do if
-                    if (time1 != time2 && !campeonato.Partidas.Any(x => x.Time1 == time2 && x.Time2 == time1))
-                    {
-                        var partida = new PartidaEntity();
-                        partida.Time1 = time1;
-                        partida.Time2 = time2;
-
-                        Random rnd = new Random();
-                        partida.Gols1 = rnd.Next(1, 7);
-                        partida.Gols2 = rnd.Next(1, 7);
-
-                        campeonato.Partidas.Add(partida);
-
-                        await _partidaService.Post(partida);
-                    }
-
-                }
-            }
-
-            var partidas = campeonato.Partidas;
-
-            //Calcula a pontuacao de cada time no campeonato
-            foreach (var partida in partidas)
-            {
-                if (partida.Gols1 > partida.Gols2)
-                {
-                    var teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time1);
-
-                    teste.Pontuacao += 3;
-                }
-                else if (partida.Gols1 < partida.Gols2)
-                {
-                    var teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time2);
-
-                    teste.Pontuacao += 3;
-                }
-                else
-                {
-                    var teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time2);
-                    teste.Pontuacao += 1;
-
-                    teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time1);
-                    teste.Pontuacao += 1;
-                }
-            }
-
-
-
+            var partidas = await _partidaService.GerarPartidas();
+            var pontuacoesCampeonato = _pontuacaoCampeonatoService.CalcularPontuacaoCampeonato(partidas, campeonato, times);
             var pontuacoesCampeonatoOrdenado = pontuacoesCampeonato.OrderByDescending(x => x.Pontuacao);
 
+            campeonato.Partidas = partidas;
             campeonato.Campeao = pontuacoesCampeonatoOrdenado.ElementAt(0).Time;
             campeonato.Vice = pontuacoesCampeonatoOrdenado.ElementAt(1).Time;
             campeonato.Terceiro = pontuacoesCampeonatoOrdenado.ElementAt(2).Time;
 
-
             var campeonatoCompleto = await _reposotory.InsertAsync(campeonato);
 
-
+            //Salva pontuacoesCampeonato no banco
             foreach (var item in pontuacoesCampeonato)
             {
                 item.Campeonato = campeonatoCompleto;
-
                 await _pontuacaoCampeonatoService.Post(item);
             }
+
+            //Salva partidas no banco
+            partidas.ForEach(partida => _partidaService.Post(partida));
 
             return campeonatoCompleto;
 

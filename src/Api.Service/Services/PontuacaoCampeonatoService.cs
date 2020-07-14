@@ -16,6 +16,47 @@ namespace Service.Services
         {
             _reposotory = reposotory;
         }
+
+        //TODO ver se não ter problema esse método não ser assíncrono e os outros serem
+        public List<PontuacaoCampeonatoEntity> CalcularPontuacaoCampeonato(List<PartidaEntity> partidas, CampeonatoEntity campeonato, List<TimeEntity> times)
+        {
+            List<PontuacaoCampeonatoEntity> pontuacoesCampeonato = new List<PontuacaoCampeonatoEntity>();
+
+            //Gera lista de PontuacaoCampeonato com times
+            foreach (var time in times)
+            {
+                var PontuacaoCampeonato = new PontuacaoCampeonatoEntity();
+                PontuacaoCampeonato.Time = time;
+                pontuacoesCampeonato.Add(PontuacaoCampeonato);
+            }
+
+            //Calcula a pontuação de cada time
+            foreach (var partida in partidas)
+            {
+                if (partida.Gols1 > partida.Gols2)
+                {
+                    var teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time1);
+
+                    teste.Pontuacao += 3;
+                }
+                else if (partida.Gols1 < partida.Gols2)
+                {
+                    var teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time2);
+
+                    teste.Pontuacao += 3;
+                }
+                else
+                {
+                    var teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time2);
+                    teste.Pontuacao += 1;
+
+                    teste = pontuacoesCampeonato.Find(x => x.Time == partida.Time1);
+                    teste.Pontuacao += 1;
+                }
+            }
+            return (pontuacoesCampeonato);
+        }
+
         public async Task<bool> Delete(Guid id)
         {
             return await _reposotory.DeletAsync(id);
