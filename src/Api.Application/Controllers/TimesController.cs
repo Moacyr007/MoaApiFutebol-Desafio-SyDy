@@ -89,7 +89,7 @@ namespace Application.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult> Put([FromBody] TimeEntity time)
+        public async Task<ActionResult> Put(Guid id, [FromBody] TimeEntity time)
         {
             if (!ModelState.IsValid)
             {
@@ -98,6 +98,7 @@ namespace Application.Controllers
 
             try
             {
+                time.Id = id;
                 var result = await _service.Put(time);
                 if (result != null)
                 {
