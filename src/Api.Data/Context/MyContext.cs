@@ -1,6 +1,7 @@
 ﻿using Data.Mapping;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Data.Context
 {
@@ -19,6 +20,12 @@ namespace Data.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<TimeEntity>(new TimeMap().Configure);
+
+            modelBuilder.Entity<TimeEntity>().HasData(
+                new TimeEntity { Id = Guid.NewGuid(), Nome = "Palmeiras" },
+                new TimeEntity { Id = Guid.NewGuid(), Nome = "Luverdense" },
+                new TimeEntity { Id = Guid.NewGuid(), Nome = "Flamengo" }
+            );
         }
     }
 }
