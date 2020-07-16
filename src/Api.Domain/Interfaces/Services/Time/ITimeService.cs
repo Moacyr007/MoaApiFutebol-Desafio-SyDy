@@ -14,5 +14,6 @@ namespace Domain.Interfaces.Services.Time
         Task<TimeEntity> Put(TimeEntity entity);
         Task<bool> Delete(Guid id);
         Task<List<TimeEntity>> GetTimes(PaginateParameters paginateParameters);
+        Task<List<TimeEntity>> FindAll(string nome);
     }
 }

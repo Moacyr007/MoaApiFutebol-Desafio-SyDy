@@ -25,7 +25,7 @@ namespace Domain.Validator
 
         private async Task<bool> IsNameUnique(string nome, CancellationToken arg2)
         {
-            var times = await _service.GetAll();
+            var times = await _service.FindAll(nome);
             return !times.Any(x => x.Nome == nome);
         }
     }

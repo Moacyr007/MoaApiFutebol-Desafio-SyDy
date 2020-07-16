@@ -2,8 +2,10 @@
 using Domain.Interfaces;
 using Domain.Interfaces.Services.Time;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Service.Services
@@ -44,6 +46,13 @@ namespace Service.Services
         public async Task<List<TimeEntity>> GetTimes(PaginateParameters paginateParameters)
         {
             return await _reposotory.GetPaginate(paginateParameters);
+        }
+
+        public async Task<List<TimeEntity>> FindAll(string nome)
+        {
+            return await _reposotory.FindAll()
+                .Where(time => time.Nome == nome)
+                .ToListAsync();
         }
     }
 }
