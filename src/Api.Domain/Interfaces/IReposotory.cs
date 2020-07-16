@@ -17,6 +17,5 @@ namespace Domain.Interfaces
         Task<bool> ExistAsync(Guid id);
         IQueryable<T> FindAll();
         IEnumerable<T> GetPaginate(PaginateParameters entity);
-
     }
 }

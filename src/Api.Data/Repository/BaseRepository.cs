@@ -92,6 +92,18 @@ namespace Data.Repository
             }
         }
 
+        public IEnumerable<T> Select()
+        {
+            try
+            {
+                return  _dataset.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<T> UpdateAsync(T item)
         {
             try
@@ -131,6 +143,5 @@ namespace Data.Repository
                 .Take(paginateParameters.TamanhoPagina)
                 .ToList();
         }
-
     }
 }

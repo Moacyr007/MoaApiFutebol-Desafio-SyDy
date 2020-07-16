@@ -10,7 +10,7 @@ namespace Domain.Models
         public int Pagina { get; set; } = 1;
 		private int _tamanhoPagina = 10;
 
-		//Não deixa setar PageSize além do limite definido(maxPageSize)
+		//Não deixa setar _tamanhoPagina além do tamanhoMaximoPagina
 		public int TamanhoPagina
 		{
 			get

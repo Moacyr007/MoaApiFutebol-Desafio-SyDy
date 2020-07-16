@@ -1,4 +1,5 @@
-﻿using Domain.Validator;
+﻿using Domain.Interfaces.Services.Time;
+using Domain.Validator;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
@@ -6,9 +7,9 @@ namespace Domain.Entities
 {
     public class TimeEntity : BaseEntity
     {
-        public FluentValidation.Results.ValidationResult Validar()
+        public FluentValidation.Results.ValidationResult Validar(ITimeService service)
         {
-            TimeValidator validator = new TimeValidator();
+            TimeValidator validator = new TimeValidator(service);
             var results = validator.Validate(this);
             
             return results;

@@ -69,7 +69,7 @@ namespace Application.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] TimeEntity time)
         {
-            var validation = time.Validar();
+            var validation = time.Validar(_service);
 
             if (!ModelState.IsValid || !validation.IsValid)
             {
