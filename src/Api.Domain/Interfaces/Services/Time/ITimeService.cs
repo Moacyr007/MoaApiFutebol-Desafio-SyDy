@@ -13,6 +13,6 @@ namespace Domain.Interfaces.Services.Time
         Task<TimeEntity> Post(TimeEntity entity);
         Task<TimeEntity> Put(TimeEntity entity);
         Task<bool> Delete(Guid id);
-        List<TimeEntity> GetTimes(PaginateParameters paginateParameters);
+        Task<List<TimeEntity>> GetTimes(PaginateParameters paginateParameters);
     }
 }

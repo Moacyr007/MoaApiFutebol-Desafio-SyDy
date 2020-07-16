@@ -4,6 +4,7 @@ using Domain.Interfaces.Services.Time;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        public  ActionResult GetTimes([FromQuery] PaginateParameters paginateParameters)
+        public async Task<ActionResult> GetTimes([FromQuery] PaginateParameters paginateParameters)
         {
             if (!ModelState.IsValid)
             {
@@ -29,7 +30,7 @@ namespace Application.Controllers
 
             try
             {
-                var times = _service.GetTimes(paginateParameters);
+                var times = await _service.GetTimes(paginateParameters);
 
                 var result = new TimesPaginateViewModel();
                 result.Times = times;

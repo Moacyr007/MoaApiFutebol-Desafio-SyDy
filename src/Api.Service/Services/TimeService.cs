@@ -41,9 +41,9 @@ namespace Service.Services
             return await _reposotory.UpdateAsync(time);
         }
 
-        public List<TimeEntity> GetTimes(PaginateParameters paginateParameters)
+        public async Task<List<TimeEntity>> GetTimes(PaginateParameters paginateParameters)
         {
-            return (List<TimeEntity>)_reposotory.GetPaginate(paginateParameters);
+            return await _reposotory.GetPaginate(paginateParameters);
         }
     }
 }

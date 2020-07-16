@@ -135,13 +135,14 @@ namespace Data.Repository
             return  _context.Set<T>();
         }
 
-        public IEnumerable<T> GetPaginate(PaginateParameters paginateParameters)
+        public async Task<List<T>> GetPaginate(PaginateParameters paginateParameters)
         {
-            return this.FindAll()
+            return await FindAll()
                 .OrderByDescending(on => on.CreateAt)
                 .Skip((paginateParameters.Pagina - 1) * paginateParameters.TamanhoPagina)
                 .Take(paginateParameters.TamanhoPagina)
-                .ToList();
+                .ToListAsync();
         }
+
     }
 }

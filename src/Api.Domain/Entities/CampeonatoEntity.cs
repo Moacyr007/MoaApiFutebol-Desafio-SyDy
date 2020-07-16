@@ -7,10 +7,6 @@ namespace Domain.Entities
 {
     public class CampeonatoEntity : BaseEntity
     {
-        //public CampeonatoEntity(ICollection<PartidaEntity> partidas)
-        //{
-        //    //TODO ver em que camada vai ficar o logica de calcular as posicoes
-        //}
         public CampeonatoEntity()
         {
             Partidas = new List<PartidaEntity>();

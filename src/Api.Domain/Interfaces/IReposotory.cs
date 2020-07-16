@@ -16,6 +16,6 @@ namespace Domain.Interfaces
         Task<IEnumerable<T>> SelectAsync();
         Task<bool> ExistAsync(Guid id);
         IQueryable<T> FindAll();
-        IEnumerable<T> GetPaginate(PaginateParameters entity);
+        Task<List<T>> GetPaginate(PaginateParameters entity);
     }
 }
