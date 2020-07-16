@@ -1,5 +1,7 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 using Domain.Interfaces.Services.Time;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -18,25 +20,32 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAll() 
+        public  ActionResult GetTimes([FromQuery] PaginateParameters paginateParameters)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); 
+                return BadRequest(ModelState);
             }
 
             try
             {
-                return Ok(await _service.GetAll());
+                var times = _service.GetTimes(paginateParameters);
+
+                var result = new TimesPaginateViewModel();
+                result.Times = times;
+                result.QtdeItens = times.Count;
+                result.TamanhoPagina = paginateParameters.TamanhoPagina;
+                result.Pagina = paginateParameters.Pagina;
+
+                return Ok(result);
 
             }
             catch (ArgumentException e)
             {
-                return StatusCode ((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
-        }
+        }  
 
-        // api/times/{id}
         [HttpGet]
         [Route("{id}", Name = "GetWithId")]
         public async Task<ActionResult> Get(Guid id)

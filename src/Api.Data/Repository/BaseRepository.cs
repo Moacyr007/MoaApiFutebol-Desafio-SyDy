@@ -1,9 +1,11 @@
 ﻿using Data.Context;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Data.Repository
@@ -27,7 +29,6 @@ namespace Data.Repository
 
                 if (result == null)
                     return false;
-                    //TODO ver se tenho que retornar alguma notificação que não achou o item
                
                 _dataset.Remove(result);
                 await _context.SaveChangesAsync();
@@ -100,7 +101,6 @@ namespace Data.Repository
                 if (result == null)
                 {
                     return null;
-                    //TODO ver se tenho que retornar alguma notificação que não achou o item
                 }
 
                 item.UpdateAt = DateTime.UtcNow;
@@ -117,5 +117,20 @@ namespace Data.Repository
 
             return item;
         }
+
+        public IQueryable<T> FindAll()
+        {
+            return  _context.Set<T>();
+        }
+
+        public IEnumerable<T> GetPaginate(PaginateParameters paginateParameters)
+        {
+            return this.FindAll()
+                .OrderByDescending(on => on.CreateAt)
+                .Skip((paginateParameters.Pagina - 1) * paginateParameters.TamanhoPagina)
+                .Take(paginateParameters.TamanhoPagina)
+                .ToList();
+        }
+
     }
 }

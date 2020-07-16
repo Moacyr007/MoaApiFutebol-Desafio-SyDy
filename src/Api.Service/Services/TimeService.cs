@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Interfaces.Services.Time;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,6 +39,11 @@ namespace Service.Services
         public async Task<TimeEntity> Put(TimeEntity time)
         {
             return await _reposotory.UpdateAsync(time);
+        }
+
+        public List<TimeEntity> GetTimes(PaginateParameters paginateParameters)
+        {
+            return (List<TimeEntity>)_reposotory.GetPaginate(paginateParameters);
         }
     }
 }
