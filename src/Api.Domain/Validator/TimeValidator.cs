@@ -20,7 +20,7 @@ namespace Domain.Validator
             RuleFor(time => time.Nome)
                 .NotNull().WithMessage("Nome não deve ser nulo")
                 .MinimumLength(3);
-            RuleFor(time => time.Nome).MustAsync(IsNameUnique).WithMessage("Nome deve ser único");
+            RuleFor(time => time.Nome).MustAsync(IsNameUnique).WithMessage("Nome deve ser único, já existe um time cadastrado com esse nome");
         }
 
         private async Task<bool> IsNameUnique(string nome, CancellationToken arg2)

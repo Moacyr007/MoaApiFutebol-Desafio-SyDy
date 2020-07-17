@@ -25,12 +25,15 @@ namespace Data.Repository
         {
             try
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
+                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id) && p.Excluido.Equals(false));
 
                 if (result == null)
                     return false;
-               
-                _dataset.Remove(result);
+
+                result.Excluido = true;
+
+                await UpdateAsync(result);
+
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -53,6 +56,7 @@ namespace Data.Repository
                 _dataset.Add(item);
 
                 item.UpdateAt = null;
+                item.Excluido = false;
 
                 await _context.SaveChangesAsync();
             }
@@ -84,7 +88,9 @@ namespace Data.Repository
         {
             try
             {
-                return await _dataset.ToListAsync();
+                return await FindAll()
+                                 .Where(x => x.Excluido != true)
+                                 .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -108,7 +114,7 @@ namespace Data.Repository
         {
             try
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(item.Id));
+                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(item.Id) && p.Excluido.Equals(false));
                 
                 if (result == null)
                 {
@@ -138,6 +144,7 @@ namespace Data.Repository
         public async Task<List<T>> GetPaginate(PaginateParameters paginateParameters)
         {
             return await FindAll()
+                .Where(x => x.Excluido != true)
                 .OrderByDescending(on => on.CreateAt)
                 .Skip((paginateParameters.Pagina - 1) * paginateParameters.TamanhoPagina)
                 .Take(paginateParameters.TamanhoPagina)

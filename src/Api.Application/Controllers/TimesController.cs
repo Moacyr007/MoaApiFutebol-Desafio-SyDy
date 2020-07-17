@@ -109,9 +109,11 @@ namespace Application.Controllers
         [Route("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] TimeEntity time)
         {
-            if (!ModelState.IsValid)
+            var validation = time.Validar(_service);
+
+            if (!ModelState.IsValid || !validation.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(validation.Errors);
             }
 
             try
@@ -124,7 +126,7 @@ namespace Application.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest("Time não encontrado");
                 }
 
             }
@@ -144,8 +146,17 @@ namespace Application.Controllers
 
             try
             { 
-                return Ok(await _service.Delete(id));
-                //TODO fazer esquema de retornar notification de pq não excluiu
+                var result = await _service.Delete(id);
+
+                if (result == false)
+                {
+                    return BadRequest("Time não encontrado");
+                }
+                else
+                {
+                    return Ok("Excluído com sucesso");
+                }
+
             }
             catch (ArgumentException e)
             {

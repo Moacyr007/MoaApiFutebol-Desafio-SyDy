@@ -17,5 +17,6 @@ namespace Domain.Entities
         }
 
         public DateTime? UpdateAt { get; set; }
-    }
+        public bool Excluido { get; set; }
+    } 
 }
