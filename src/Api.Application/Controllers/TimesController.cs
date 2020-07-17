@@ -1,9 +1,11 @@
 ﻿using Application.ViewModels;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Services.Time;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,9 +17,11 @@ namespace Application.Controllers
     public class TimesController : ControllerBase
     {
         private ITimeService _service;
-        public TimesController(ITimeService service)
+        private readonly IMapper _mapper;
+        public TimesController(ITimeService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -32,8 +36,10 @@ namespace Application.Controllers
             {
                 var times = await _service.GetTimes(paginateParameters);
 
+                var timesVideModel = _mapper.Map<List<TimeEntity>, List<TimeViewModel>>(times);
                 var result = new TimesPaginateViewModel();
-                result.Times = times;
+
+                result.Times = timesVideModel;
                 result.QtdeItens = times.Count;
                 result.TamanhoPagina = paginateParameters.TamanhoPagina;
                 result.Pagina = paginateParameters.Pagina;
