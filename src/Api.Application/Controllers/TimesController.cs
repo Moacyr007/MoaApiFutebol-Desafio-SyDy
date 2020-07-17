@@ -38,10 +38,12 @@ namespace Application.Controllers
 
                 var timesVideModel = _mapper.Map<List<TimeEntity>, List<TimeViewModel>>(times);
                 var result = new TimesPaginateViewModel();
+                var qtdPagina = await _service.Count();
+                qtdPagina = qtdPagina / paginateParameters.TamanhoPagina + 1;
 
                 result.Times = timesVideModel;
-                result.QtdeItens = times.Count;
                 result.TamanhoPagina = paginateParameters.TamanhoPagina;
+                result.QtdPagina = qtdPagina;
                 result.Pagina = paginateParameters.Pagina;
 
                 return Ok(result);

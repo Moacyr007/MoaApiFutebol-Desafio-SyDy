@@ -54,5 +54,10 @@ namespace Service.Services
                 .Where(time => time.Nome == nome)
                 .ToListAsync();
         }
+
+        public async Task<int> Count()
+        {
+            return await _reposotory.Count();
+        }
     }
 }

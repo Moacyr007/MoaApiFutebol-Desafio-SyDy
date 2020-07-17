@@ -144,5 +144,11 @@ namespace Data.Repository
                 .ToListAsync();
         }
 
+        public async Task<int> Count()
+        {
+            return await FindAll()
+                .CountAsync();
+        }
+
     }
 }
