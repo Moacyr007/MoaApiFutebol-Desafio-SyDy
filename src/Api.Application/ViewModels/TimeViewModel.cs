@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 
 namespace Application.ViewModels
 {
