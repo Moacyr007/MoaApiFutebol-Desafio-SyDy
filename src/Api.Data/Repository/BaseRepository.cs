@@ -23,122 +23,81 @@ namespace Data.Repository
         }
         public async Task<bool> DeletAsync(Guid id)
         {
-            try
-            {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id) && p.Excluido.Equals(false));
+            var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id) && p.Excluido.Equals(false));
 
-                if (result == null)
-                    return false;
+            if (result == null)
+                return false;
 
-                result.Excluido = true;
+            result.Excluido = true;
 
-                await UpdateAsync(result);
+            await UpdateAsync(result);
 
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<T> InsertAsync(T item)
         {
-            try
+            if (item.Id == Guid.Empty)
             {
-                if(item.Id == Guid.Empty)
-                {
-                    item.Id = Guid.NewGuid();
-                }
-
-                item.CreateAt = DateTime.UtcNow;
-                _dataset.Add(item);
-
-                item.UpdateAt = null;
-                item.Excluido = false;
-
-                await _context.SaveChangesAsync();
+                item.Id = Guid.NewGuid();
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+            item.CreateAt = DateTime.UtcNow;
+            _dataset.Add(item);
+
+            item.UpdateAt = null;
+            item.Excluido = false;
+
+            await _context.SaveChangesAsync();
+
             return item;
         }
 
-        public async Task<bool> ExistAsync (Guid id)
+        public async Task<bool> ExistAsync(Guid id)
         {
             return await _dataset.AnyAsync(p => p.Id.Equals(id));
         }
 
         public async Task<T> SelectAsync(Guid id)
         {
-            try
-            {
-                return await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
         }
 
         public async Task<IEnumerable<T>> SelectAsync()
         {
-            try
-            {
-                return await FindAll()
-                                 .Where(x => x.Excluido != true)
-                                 .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await FindAll()
+                             .Where(x => x.Excluido != true)
+                             .ToListAsync();
+
         }
 
         public IEnumerable<T> Select()
         {
-            try
-            {
-                return  _dataset.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return _dataset.ToList();
         }
 
         public async Task<T> UpdateAsync(T item)
         {
-            try
+            var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(item.Id) && p.Excluido.Equals(false));
+
+            if (result == null)
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(item.Id) && p.Excluido.Equals(false));
-                
-                if (result == null)
-                {
-                    return null;
-                }
-
-                item.UpdateAt = DateTime.UtcNow;
-                item.CreateAt = result.CreateAt;
-
-                _context.Entry(result).CurrentValues.SetValues(item);
-                await _context.SaveChangesAsync();
+                return null;
             }
-            catch (Exception ex)
-            {
 
-                throw ex;
-            }
+            item.UpdateAt = DateTime.UtcNow;
+            item.CreateAt = result.CreateAt;
+
+            _context.Entry(result).CurrentValues.SetValues(item);
+            await _context.SaveChangesAsync();
 
             return item;
         }
 
         public IQueryable<T> FindAll()
         {
-            return  _context.Set<T>();
+            return _context.Set<T>();
         }
 
         public async Task<List<T>> GetPaginate(PaginateParameters paginateParameters)
