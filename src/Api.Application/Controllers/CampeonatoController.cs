@@ -23,7 +23,7 @@ namespace Application.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> Campeonato()
         {
             try

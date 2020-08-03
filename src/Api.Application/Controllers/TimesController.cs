@@ -91,7 +91,7 @@ namespace Application.Controllers
                 var result = await _service.Post(time);
                 if (result != null)
                 {
-                    return Ok();
+                    return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
                 }
                 else 
                 { 
